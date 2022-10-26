@@ -81,6 +81,7 @@ class KRSController extends Controller
             foreach($data as $x){
                 $x['count'] = StudentSubject::where('subject_id',$x->subject_id)->count();
             }
+
             return view('admin.krs.edit', [
                 'data' => $data
             ]);
@@ -100,22 +101,24 @@ class KRSController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            // if(($request->value)=="true"){
-            //     StudentSubject::where('id',$id)->update([
-            //         'status'=>'ONGOING'
-            //     ]);
-            // }
-            // if(($request->value)=="false"){
-            //     StudentSubject::where('id',$id)->update([
-            //         'status'=>'REJECTED'
-            //     ]);
-            // }
-            // if(($request->value)=="revert"){
-            //     StudentSubject::where('id',$id)->update([
-            //         'status'=>'PENDING'
-            //     ]);
-            // }
-            return response()->json(['result'=>$request->id]);
+            if(($request->value)=="true"){
+                StudentSubject::where('id',$id)->update([
+                    'status'=>'ONGOING'
+                ]);
+            }
+            if(($request->value)=="false"){
+                StudentSubject::where('id',$id)->update([
+                    'status'=>'REJECTED'
+                ]);
+            }
+            if(($request->value)=="revert"){
+                StudentSubject::where('id',$id)->update([
+                    'status'=>'PENDING'
+                ]);
+            }
+            return response()->json(['result'=>$request->value]);
+
+            
         } catch (\Throwable $th) {
             return redirect()->back()->with('toast_error',  'Data tidak berhasil diubah!');
         }
